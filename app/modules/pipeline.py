@@ -1,6 +1,7 @@
 from app.business import DomainIssue
 from app.intake.service import inspect
 from app.modules.calculate import compute
+from app.modules.chain import expand
 from app.modules.grouping import case_groups
 from app.modules.policy import policy
 from app.modules.prepare import prepare
@@ -13,6 +14,7 @@ def evaluate(rows, stage):
         "records": [r["record"] for r in rows],
         "status": "READY",
     }
+    case["chain"] = expand(rows)
     try:
         case["prep"], payload = prepare(rows)
         if stage >= 3:

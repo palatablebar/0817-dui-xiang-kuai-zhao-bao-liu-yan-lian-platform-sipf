@@ -6,7 +6,7 @@
   color-scheme:dark; }
 * {box-sizing:border-box} [hidden] {display:none!important}
 body.archive {margin:0;background:var(--bg);color:var(--ink);font:var(--size)/1.55 var(--font-ui)}
-.archive .desk {display:grid;grid-template-areas:"mast mast" "stages stages" "source source" "archive kpis" "archive results" "archive inspection" "chart chart" "statusbar statusbar";grid-template-columns:.72fr 1.4fr;gap:var(--gap);margin:auto;padding:clamp(14px,3vw,42px);max-width:1658px}
+.archive .desk {display:grid;grid-template-areas:"mast mast" "stages stages" "source source" "archive kpis" "archive results" "archive inspection" "chart chart" "closure closure" "statusbar statusbar";grid-template-columns:.72fr 1.4fr;gap:var(--gap);margin:auto;padding:clamp(14px,3vw,42px);max-width:1658px}
 .archive .mast {grid-area:mast;background:var(--surface);padding:var(--pad);min-width:0}
 .archive .mast h1 {font:700 clamp(26px,4vw,73px)/1.1 var(--font-display);margin:0;overflow-wrap:anywhere}
 .archive .role {color:var(--accent);margin:0 0 13px;font-weight:700}
@@ -24,15 +24,19 @@ body.archive {margin:0;background:var(--bg);color:var(--ink);font:var(--size)/1.
 .archive .metric {background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:var(--pad);display:grid;align-content:center}
 .archive .metric strong {font:600 clamp(22px,4vw,58px)/1.05 var(--font-num);font-variant-numeric:tabular-nums}
 .archive .panel {background:var(--surface);padding:var(--pad);min-width:0;border:1px solid var(--line);border-radius:var(--radius)}
-.archive .results {grid-area:results} .archive .chart {grid-area:chart} .archive .inspection {grid-area:inspection} .archive .archive {grid-area:archive}
+.archive .results {grid-area:results} .archive .chart {grid-area:chart} .archive .inspection {grid-area:inspection} .archive .archive {grid-area:archive} .archive .closure {grid-area:closure}
 .archive h2 {font-size:19px;margin:0 0 10px} .archive .panel-head {display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;justify-content:space-between}
 .archive #counts,.archive #run-status {color:var(--sub);overflow-wrap:anywhere}
 .archive .scroll {overflow:auto;max-height:290px}
 .archive table {border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;min-width:360px}
 .archive th,.archive td {text-align:left;height:var(--row);padding:5px 15px;border-bottom:1px solid var(--line);white-space:nowrap}
 .archive th {position:sticky;top:0;background:var(--surface);color:var(--sub)} .archive td:nth-child(n+2):nth-child(-n+4) {text-align:right}
-.archive .badge {color:var(--alert);font-size:.83em;padding:2px 4px;white-space:nowrap} .archive .badge:is([data-result="READY"],[data-result="APPROVED"]) {color:var(--accent)}
+.archive .badge {color:var(--alert);font-size:.83em;padding:2px 4px;white-space:nowrap} .archive .badge:is([data-result="READY"],[data-result="APPROVED"],[data-result="CARRY_OVER"],[data-result="ADJUDICATED"]) {color:var(--accent)}
 .archive #detail {margin:0;max-height:230px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font: .91em/1.5 var(--font-num)}
+.archive #closure-summary {color:var(--sub);margin:0 0 8px}
+.archive #closure-basis {color:var(--sub);overflow-wrap:anywhere}
+.archive #closure-diff {margin:0;max-height:180px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:.91em/1.5 var(--font-num)}
+.archive .closure h3 {font-size:15px;margin:12px 0 6px;color:var(--sub)}
 .archive #history {list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:var(--gap);margin:0} .archive #history li {display:flex;align-items:center}
 .archive #review {margin-top:14px;max-width:580px} .archive textarea {display:block;width:100%;min-height:54px;cursor:text}
 .archive .review-actions {display:flex;gap:6px;margin:8px 0}
@@ -42,8 +46,8 @@ body.archive {margin:0;background:var(--bg);color:var(--ink);font:var(--size)/1.
 .archive .archive ul li {border-bottom:1px dotted var(--line)}
 .archive .results {border-radius:0 16px 16px 0}
 .archive .mast {border-bottom:4px solid var(--accent)}
-@media(max-width:1120px) { .archive .desk {grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"mast mast" "source source" "stages stages" "kpis kpis" "results results" "chart inspection" "archive archive" "statusbar statusbar"} }
-@media(max-width:630px) { .archive .desk {grid-template-columns:minmax(0,1fr);grid-template-areas:"mast" "source" "stages" "kpis" "chart" "results" "inspection" "archive" "statusbar"} .archive .kpis {grid-template-columns:repeat(2,minmax(0,1fr))} .archive .chart #visual {display:block!important} .archive .stages button {width:auto} }
+@media(max-width:1120px) { .archive .desk {grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"mast mast" "source source" "stages stages" "kpis kpis" "results results" "chart inspection" "closure closure" "archive archive" "statusbar statusbar"} }
+@media(max-width:630px) { .archive .desk {grid-template-columns:minmax(0,1fr);grid-template-areas:"mast" "source" "stages" "kpis" "chart" "results" "inspection" "closure" "archive" "statusbar"} .archive .kpis {grid-template-columns:repeat(2,minmax(0,1fr))} .archive .chart #visual {display:block!important} .archive .stages button {width:auto} }
 @media print { .archive .source,.archive .stages,.archive .archive,.archive .statusbar {display:none} .archive .desk {display:block} }
 
 .mark-piece {background:var(--accent);color:var(--surface);min-width:0}

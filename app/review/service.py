@@ -4,6 +4,7 @@ from time import monotonic
 
 from app.business import DomainIssue
 from app.config import RULE_VERSION
+from app.modules.handover import closure
 from app.modules.pipeline import run
 
 
@@ -21,6 +22,7 @@ def execute(store, data):
         if error.code != "RUN_NOT_FOUND":
             raise
     report = run(data)
+    report["closure"] = closure(report, store.latest_approved())
     report["manifest"] = dict(
         sha256=fingerprint,
         version=RULE_VERSION,
@@ -49,6 +51,11 @@ def review(store, run_id, values):
         raise DomainIssue("STALE_REVIEW")
     if current["status"] == "APPROVED":
         raise DomainIssue("RUN_FINALIZED")
-    if status == "APPROVED" and not current["report"]["balance"]["releasable"]:
-        raise DomainIssue("UNRESOLVED_ISSUES")
+    if status == "APPROVED":
+        closure_doc = current["report"].get("closure")
+        releasable = current["report"]["balance"]["releasable"] and (
+            closure_doc is None or closure_doc["releasable"]
+        )
+        if not releasable:
+            raise DomainIssue("UNRESOLVED_ISSUES")
     return store.revise(run_id, revision, status, note.strip(), now())

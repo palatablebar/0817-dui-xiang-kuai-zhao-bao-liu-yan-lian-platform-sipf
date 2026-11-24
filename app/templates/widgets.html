@@ -8,7 +8,7 @@
 {% endmacro %}
 {% macro intake() %}
 <form class="source" id="source" aria-label="批次输入">
-  <label>输入样例 <select id="profile"><option value="dirty">带异常样例</option><option value="clean">可签发样例</option></select></label>
+  <label>输入样例 <select id="profile"><option value="dirty">带异常样例</option><option value="clean">可签发样例</option><option value="late">晚到定义样例</option><option value="reissue">补发材料样例</option></select></label>
   <label for="file" class="file">上传 CSV</label><input id="file" type="file" accept=".csv,text/csv"><span id="file-name" aria-live="polite"></span>
   <button type="submit" class="action">执行批次</button>
 </form>
@@ -31,6 +31,14 @@
 {% endmacro %}
 {% macro inspection() %}
 <section class="panel inspection"><h2 id="detail-title">采信摘要</h2><pre id="detail"></pre></section>
+{% endmacro %}
+{% macro closure() %}
+<section class="panel closure" id="closure" hidden>
+  <div class="panel-head"><h2>交接闭合单</h2><span id="closure-basis"></span></div>
+  <p id="closure-summary"></p>
+  <div class="scroll"><table id="closure-rows" aria-label="闭合对象"></table></div>
+  <h3>对账差异</h3><pre id="closure-diff"></pre>
+</section>
 {% endmacro %}
 {% macro archive() %}
 <aside class="panel archive"><h2>批次复核</h2><ul id="history"></ul>

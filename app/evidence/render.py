@@ -5,6 +5,7 @@ def artifact(run):
     packet = {
         "schema": "review-evidence/1",
         "manifest": run["report"]["manifest"],
+        "closure": run["report"].get("closure"),
         "balance": run["report"]["balance"],
         "cases": run["report"]["cases"],
         "intake": run["report"]["intake"],

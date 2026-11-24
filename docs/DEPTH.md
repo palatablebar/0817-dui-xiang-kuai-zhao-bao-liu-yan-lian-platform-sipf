@@ -13,6 +13,18 @@
 | M5 运行对账 | 对照输入、采信和隔离行 | `POST /api/stages/balance` | `app/modules/reconcile.py` | `tests/test_reconcile.py` |
 | M6 批次复核 | 执行批次并签发或暂缓 | `POST /api/runs、PATCH /api/runs/<id>` | `app/review/service.py` | `tests/test_review.py` |
 | M7 证据交付 | 下载复核清单 | `GET /api/runs/<id>/evidence` | `app/evidence/render.py` | `tests/test_evidence.py` |
+| M8 交接闭合 | 按旧依据裁决沿用、隔离并留对账差异 | 随 `POST /api/runs` 生成 | `app/modules/handover.py`、`app/modules/chain.py` | `tests/test_handover.py` |
+
+## 交接闭合裁决
+
+换月交接时上游快照定义常晚到。执行批次时以最近一批已签发批次为旧依据，按对象展开引用链（`chain`）并逐对象裁决：
+
+- 沿用（CARRY_OVER）：旧依据可追溯，控制参数、对象属性与快照定义指纹完全一致，直接沿用已签发结论，不重复生成。
+- 新裁（ADJUDICATED）：本次材料完整的新对象，按本次材料计算结论。
+- 隔离（QUARANTINED）：身份不明（引用缺失快照定义）、本次材料冲突或引用变化，挡住整批签发。
+- 保留（RETAINED）：旧依据中的对象本次源材料缺失，保留上一版结论。
+
+源对象、快照定义和隔离项任一对不上都在闭合单 `reconciliation` 中留出对账差异；存在隔离项或差异的批次标记 `blocked`，上一版签发批次保留为有效依据。补发材料重跑只补齐受影响对象。
 
 ## 输入陷阱
 

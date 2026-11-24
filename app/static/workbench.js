@@ -1,5 +1,5 @@
 import {request} from './client.js';
-import {snapshot, history} from './view.js';
+import {snapshot, history, handover} from './view.js';
 import {visualize} from './plots.js';
 
 const form = document.querySelector('#source');
@@ -28,12 +28,13 @@ function draw() {
   if (!report) return;
   snapshot(report, selected, stage);
   visualize(report, selected);
+  handover(report);
   for (const button of stages) button.setAttribute('aria-pressed',String(button.dataset.stage===stage));
   document.querySelector('#panel-title').textContent = stages.find(button => button.dataset.stage===stage)?.textContent || '运行对账';
   detail.hidden = !batch;
   if (batch) {
     document.querySelector('#run-status').textContent = `${batch.id.slice(0,10)} · ${batch.status} · r${batch.revision}`;
-    detail.querySelector('[value="APPROVED"]').disabled = !report.balance.releasable || batch.status==='APPROVED';
+    detail.querySelector('[value="APPROVED"]').disabled = !report.balance.releasable || (report.closure && !report.closure.releasable) || batch.status==='APPROVED';
     detail.querySelector('[value="HELD"]').disabled = batch.status==='APPROVED';
     evidence.href = `/api/runs/${batch.id}/evidence`;
   }
